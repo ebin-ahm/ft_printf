@@ -107,47 +107,26 @@ ft_printf/
 
 ## Algorithm
 
-1. Start by initializing a counter to track the total number of printed characters.
+1. ft_printf reads the format string from start to end using an index or pointer.
 
-2. Move along the format string one character at a time.
-   - If the current character is not '%', output it directly using `write()` 
-     and update the printed character count.
+2. If the current character is not '%', it writes that character using write() and increments the character counter. If the current character is '%', it looks at the next character to determine which type to print (c, s, d, x, p, etc.).
 
-3. When a '%' character is detected, switch into *format parsing mode*:
-   - Look at the next character to determine which format specifier is being used 
-     (e.g., 'c', 's', 'd', 'x', etc.).
+3. va_arg is used to fetch the next value from the variadic argument list with the correct type.
 
-4. Using the identified specifier, retrieve the next argument from the variadic
-   argument list with `va_arg`. This step converts the "..." arguments into 
-   usable C types, such as `int`, `char *`, or `unsigned int`.
+4. A handler function for that specifier prints the value using utility functions (for characters, strings, numbers, and hexadecimal). Each handler returns the number of characters it printed, and this value is added to the running total.
 
-5. Pass the extracted value to the corresponding handler function:
-   - Each handler is responsible for one specific conversion type.
-   - This keeps format-specific logic isolated and readable.
-
-6. Within each handler, call the appropriate utility functions:
-   - These helpers perform the actual printing and data conversion.
-   - For example:
-       • `ft_putchar` prints a single character  
-       • `ft_putstr` prints a string  
-       • `ft_putnbr` prints an integer  
-       • `ft_puthex` prints a number in hexadecimal  
-     All output is ultimately performed using `write()`.
-
-7. Each handler returns the number of characters it printed.
-   Add this value to the running total.
-
-8. Continue scanning the format string until the end is reached.
-
-9. After processing all characters and specifiers, return the accumulated count,
-   which represents the total number of characters written — mirroring the behavior
-   of the standard `printf`.
+5. After the whole format string is processed, va_end is called and ft_printf returns the total count.
 
 ## Handlers & Utility
 
 For this `ft_printf` project, the implementation is divided into two functionals layer; handlers & utility
-- Handlers manages format specific behaviour for each specifier
-- Utility performs low-level operations such as character output. string handling and number to string conversion.
+- Handlers manage format-specific behaviour for each specifier.
+They are responsible for deciding how to handle %c, %s, %p, %d, %u, %x, %X, and %%.
+
+- Utility functions perform low-level operations such as:
+	- character output
+	- string handling
+	- number to string and number to hex conversions
 
 ## Resources
 
@@ -162,4 +141,3 @@ AI (ChatGPT) was used for:
 2. Explaining algorithms, edge cases, and debugging  
 
 All code was manually written and verified by ebin-ahm.
-
