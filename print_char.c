@@ -6,7 +6,7 @@
 /*   By: ebin-ahm <ebin-ahm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 18:18:35 by ebin-ahm          #+#    #+#             */
-/*   Updated: 2025/12/17 18:27:23 by ebin-ahm         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:08:29 by ebin-ahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	print_char(int c)
 {
-	char	x;
+	char	ch;
 
-	x = (char )c;
-	write(1, &x, 1);
+	ch = (char )c;
+	write(1, &ch, 1);
 	return (1);
 }

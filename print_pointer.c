@@ -6,7 +6,7 @@
 /*   By: ebin-ahm <ebin-ahm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 20:41:19 by ebin-ahm          #+#    #+#             */
-/*   Updated: 2025/12/17 20:42:51 by ebin-ahm         ###   ########.fr       */
+/*   Updated: 2025/12/18 12:11:59 by ebin-ahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ int	print_pointer(void *ptr)
 	int				count;
 
 	address = (unsigned long)ptr;
+	if (!ptr)
+	{
+		write(1, "(nil)", 5);
+		return (5);
+	}
 	count = 0;
 	write(1, "0x", 2);
 	count += 2;

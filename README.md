@@ -35,11 +35,13 @@ The final output is written to standard output, and `printf` returns the total n
 
 ### Structure of ft_printf
 
-- **Makefile** – automates compilation into `libftprintf.a`
-- **ft_printf.h** – header file containing prototypes and required includes (`stdarg.h`,`unistd.h`,`stddef.h`)
-- **ft_printf.c** – main parser and variadic argument handler
-- **Handler files** – implement printing logic for each format specifier
-- **Utility files** – low-level output helpers (write wrappers, conversions, etc.)
+**Makefile** – builds the libftprintf.a library
+
+**ft_printf.h** – contains function prototypes and required headers
+
+**ft_printf.c** – parses the format string and handles variadic arguments
+
+**print_*.c files** – handle printing for each format specifierr 
 
 ---
 
@@ -79,54 +81,31 @@ cc -Wall -Wextra -Werror main.c libftprintf.a -o program
 
 ## Structure 
 ft_printf/
-│
-├── `Makefile`
-├── `ft_printf.h`
-├── `ft_printf.c`
-│
-├── handlers/
-│   ├── `handle_char.c`
-│   ├── `handle_string.c`
-│   ├── `handle_pointer.c`
-│   ├── `handle_decimal.c`
-│   ├── `handle_unsigned.c`
-│   ├── `handle_hex_lower.c`
-│   ├── `handle_hex_upper.c`
-│   └── `handle_percent.c`
-│
-└── utility/
-    ├── `ft_putchar.c`
-    ├── `ft_putstr.c`
-    ├── `ft_putnbr.c`
-    ├── `ft_putnbr_unsigned.c`
-    ├── `ft_puthex.c`
-    ├── `ft_strlen.c`
-    └── `ft_itoa_base.c (optional)`
+├── Makefile
+├── README.md
+├── ft_printf.h
+├── ft_printf.c
+├── print_char.c
+├── print_string.c
+├── print_int.c
+├── print_unsigned.c
+├── print_hex.c
+├── print_pointer.c
+└── print_percent.c
 
-*Note: "handlers and "utility" are shown as categories for clarity.*
+*Each print_*.c file implements the logic for a specific format specifier, keeping the design modular and easy to maintain.*
 
 ## Algorithm
 
-1. ft_printf reads the format string from start to end using an index or pointer.
+1. `ft_printf` iterates through the format string character by character while managing a va_list.
 
-2. If the current character is not '%', it writes that character using write() and increments the character counter. If the current character is '%', it looks at the next character to determine which type to print (c, s, d, x, p, etc.).
+2. Regular characters are written directly to standard output using `write()` and counted.
 
-3. va_arg is used to fetch the next value from the variadic argument list with the correct type.
+3. When a % is encountered, the next character is treated as a format specifier and dispatched to the appropriate handler using `va_arg`.
 
-4. A handler function for that specifier prints the value using utility functions (for characters, strings, numbers, and hexadecimal). Each handler returns the number of characters it printed, and this value is added to the running total.
+4. Each handler prints its value (handling special cases such as NULL) and returns the number of characters printed, which is added to the total count.
 
-5. After the whole format string is processed, va_end is called and ft_printf returns the total count.
-
-## Handlers & Utility
-
-For this `ft_printf` project, the implementation is divided into two functionals layer; handlers & utility
-- Handlers manage format-specific behaviour for each specifier.
-They are responsible for deciding how to handle %c, %s, %p, %d, %u, %x, %X, and %%.
-
-- Utility functions perform low-level operations such as:
-	- character output
-	- string handling
-	- number to string and number to hex conversions
+5. After processing the entire format string, va_end is called and **ft_printf returns the total number of characters written**.
 
 ## Resources
 

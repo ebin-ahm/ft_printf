@@ -6,7 +6,7 @@
 /*   By: ebin-ahm <ebin-ahm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 19:48:47 by ebin-ahm          #+#    #+#             */
-/*   Updated: 2025/12/17 19:57:24 by ebin-ahm         ###   ########.fr       */
+/*   Updated: 2025/12/17 20:49:12 by ebin-ahm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int	print_udigits(unsigned long nb)
 
 int	print_unsigned(unsigned int n)
 {
-	long	nb;
-	int		count;
-	char	ch;
+	unsigned long	nb;
+	int				count;
+	char			ch;
 
 	nb = n;
 	count = 0;
