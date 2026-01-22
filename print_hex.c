@@ -15,17 +15,22 @@
 static int	print_hex_digits(unsigned long nb, const char *base)
 {
 	int		count;
+	int		ret;
 	char	ch;
 
 	count = 0;
 	if (nb >= 16)
 	{
-		count += print_hex_digits(nb / 16, base);
+		ret = print_hex_digits(nb / 16, base);
+		if (ret == -1)
+			return (-1);
+		count += ret;
 	}
 	ch = base[nb % 16];
-	write(1, &ch, 1);
-	count++;
-	return (count);
+	ret = ft_write(&ch, 1);
+	if (ret == -1)
+		return (-1);
+	return (count + 1);
 }
 
 int	print_hex(unsigned int n, int uppercase)
@@ -39,9 +44,6 @@ int	print_hex(unsigned int n, int uppercase)
 	else
 		base = "0123456789abcdef";
 	if (nb == 0)
-	{
-		write(1, "0", 1);
-		return (1);
-	}
+		return (ft_write("0", 1));
 	return (print_hex_digits(nb, base));
 }
