@@ -12,42 +12,59 @@
 
 #include "ft_printf.h"
 
+static int	add_count(int *count, int ret)
+{
+	if (ret == -1)
+		return (-1);
+	*count += ret;
+	return (0);
+}
+
 static int	print_digits(long nb)
 {
+	char	c;
+	int		ret;
 	int		count;
-	char	ch;
 
 	count = 0;
 	if (nb >= 10)
-		count += print_digits(nb / 10);
-	ch = '0' + (nb % 10);
-	write(1, &ch, 1);
-	count++;
-	return (count);
+	{
+		ret = print_digits(nb / 10);
+		if (ret == -1)
+			return (-1);
+		count += ret;
+	}
+	c = '0' + (nb % 10);
+	ret = ft_write(&c, 1);
+	if (ret == -1)
+		return (-1);
+	return (count + 1);
 }
 
 int	print_int(int n)
 {
 	long	nb;
 	int		count;
-	char	ch;
+	int		ret;
 
-	nb = n;
+	nb = (long)n;
 	count = 0;
 	if (nb < 0)
 	{
-		ch = '-';
-		write(1, &ch, 1);
-		count++;
+		ret = ft_write("-", 1);
+		if (add_count(&count, ret) == -1)
+			return (-1);
 		nb = -nb;
 	}
 	if (nb == 0)
 	{
-		ch = '0';
-		write(1, &ch, 1);
-		count++;
+		ret = ft_write("0", 1);
+		if (add_count(&count, ret) == -1)
+			return (-1);
 		return (count);
 	}
-	count += print_digits(nb);
-	return (count);
+	ret = print_digits(nb);
+	if (ret == -1)
+		return (-1);
+	return (count + ret);
 }
