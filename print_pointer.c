@@ -15,39 +15,47 @@
 static int	print_hex_digits(unsigned long nb, const char *base)
 {
 	int		count;
+	int		ret;
 	char	ch;
 
 	count = 0;
 	if (nb >= 16)
 	{
-		count += print_hex_digits(nb / 16, base);
+		ret = print_hex_digits(nb / 16, base);
+		if (ret == -1)
+			return (-1);
+		count += ret;
 	}
 	ch = base[nb % 16];
-	write(1, &ch, 1);
-	count++;
-	return (count);
+	ret = ft_write(&ch, 1);
+	if (ret == -1)
+		return (-1);
+	return (count + 1);
 }
 
 int	print_pointer(void *ptr)
 {
 	unsigned long	address;
 	int				count;
+	int				ret;
 
 	address = (unsigned long)ptr;
 	if (!ptr)
-	{
-		write(1, "(nil)", 5);
-		return (5);
-	}
+		return (ft_write("(nil)", 5));
 	count = 0;
-	write(1, "0x", 2);
+	ret = ft_write("0x", 2);
+	if (ret == -1)
+		return (-1);
 	count += 2;
 	if (address == 0)
 	{
-		write(1, "0", 1);
-		count++;
-		return (count);
+		ret = ft_write("0", 1);
+		if (ret == -1)
+			return (-1);
+		return (count + 1);
 	}
-	count += print_hex_digits(address, "0123456789abcdef");
-	return (count);
+	ret = print_hex_digits(address, "0123456789abcdef");
+	if (ret == -1)
+		return (-1);
+	return (count + ret);
 }
