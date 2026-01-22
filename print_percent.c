@@ -14,6 +14,5 @@
 
 int	print_percent(void)
 {
-	write(1, "%", 1);
-	return (1);
+	return (ft_write("%", 1));
 }
