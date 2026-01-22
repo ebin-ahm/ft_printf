@@ -12,8 +12,20 @@
 
 #include "ft_printf.h"
 
+int	ft_write(const void *buf, size_t n)
+{
+	ssize_t	ret;
+
+	ret = write(1, buf, n);
+	if (ret < 0)
+		return (-1);
+	return ((int)ret);
+}
+
 static int	handle_specifier(char spec, va_list *args)
 {
+	int	ret;
+
 	if (spec == 'c')
 		return (print_char(va_arg(*args, int)));
 	if (spec == 's')
@@ -30,32 +42,38 @@ static int	handle_specifier(char spec, va_list *args)
 		return (print_pointer(va_arg(*args, void *)));
 	if (spec == '%')
 		return (print_percent());
-	return (write(1, "%", 1) + write(1, &spec, 1));
+	ret = ft_write("%", 1);
+	if (ret == -1)
+		return (-1);
+	ret = ft_write(&spec, 1);
+	if (ret == -1)
+		return (-1);
+	return (2);
 }
 
 int	ft_printf(const char *format, ...)
 {
-	int		index;
-	int		count;
 	va_list	args;
+	int		i;
+	int		count;
+	int		ret;
 
 	va_start(args, format);
-	index = 0;
+	i = 0;
 	count = 0;
-	while (format && format[index])
+	while (format && format[i])
 	{
-		if (format[index] == '%')
+		if (format[i] == '%' && format[i + 1])
 		{
-			index++;
-			if (format[index])
-				count += handle_specifier(format[index], &args);
+			i++;
+			ret = handle_specifier(format[i], &args);
 		}
 		else
-		{
-			write(1, &format[index], 1);
-			count++;
-		}
-		index++;
+			ret = ft_write(&format[i], 1);
+		if (ret == -1)
+			return (va_end(args), -1);
+		count += ret;
+		i++;
 	}
 	va_end(args);
 	return (count);
