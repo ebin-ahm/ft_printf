@@ -17,6 +17,5 @@ int	print_char(int c)
 	char	ch;
 
 	ch = (char )c;
-	write(1, &ch, 1);
-	return (1);
+	return (ft_write(&ch, 1));
 }
