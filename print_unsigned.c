@@ -15,34 +15,36 @@
 static int	print_udigits(unsigned long nb)
 {
 	int		count;
+	int		ret;
 	char	ch;
 
 	count = 0;
 	if (nb >= 10)
 	{
-		count += print_udigits(nb / 10);
+		ret = print_udigits(nb / 10);
+		if (ret == -1)
+			return (-1);
+		count += ret;
 	}
 	ch = '0' + (nb % 10);
-	write(1, &ch, 1);
-	count++;
-	return (count);
+	ret = ft_write(&ch, 1);
+	if (ret == -1)
+		return (-1);
+	return (count + 1);
 }
 
 int	print_unsigned(unsigned int n)
 {
 	unsigned long	nb;
-	int				count;
+	int				ret;
 	char			ch;
 
 	nb = n;
-	count = 0;
 	if (nb == 0)
 	{
 		ch = '0';
-		write(1, &ch, 1);
-		count++;
-		return (count);
+		return (ft_write(&ch, 1));
 	}
-	count += print_udigits(nb);
-	return (count);
+	ret = print_udigits(nb);
+	return (ret);
 }
