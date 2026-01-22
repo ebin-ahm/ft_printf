@@ -15,16 +15,16 @@
 int	print_string(char *s)
 {
 	int	index;
+	int	ret;
 
 	index = 0;
 	if (!s)
-	{
-		write(1, "(null)", 6);
-		return (6);
-	}
+		return (ft_write("(null)", 6));
 	while (s[index] != '\0')
 	{
-		write(1, &s[index], 1);
+		ret = ft_write(&s[index], 1);
+		if (ret == -1)
+			return (-1);
 		index++;
 	}
 	return (index);
